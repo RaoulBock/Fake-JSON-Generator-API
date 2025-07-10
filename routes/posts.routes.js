@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { posts, getNextPostId } = require('../models/posts');
+const { posts, getNextPostId } = require('../models/posts.models');
 
 router.get('/', (req, res) => res.json(posts));
 

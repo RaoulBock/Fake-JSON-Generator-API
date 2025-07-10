@@ -5,14 +5,23 @@ const PORT = 3000;
 app.use(express.json());
 
 // Import routes
-const userRoutes = require("./routes/users");
-const postRoutes = require("./routes/posts");
-const commentRoutes = require("./routes/comments");
+const userRoutes = require("./routes/users.routes");
+const postRoutes = require("./routes/posts.routes");
+const commentRoutes = require("./routes/comments.routes");
 
 // Use routes
 app.use("/users", userRoutes);
 app.use("/posts", postRoutes);
 app.use("/comments", commentRoutes);
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack); // Log full error stack for debugging
+
+  const status = err.status || 500;
+  const message = err.message || "Internal Server Error";
+
+  res.status(status).json({ error: message });
+});
 
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
