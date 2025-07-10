@@ -1,15 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const { users, getNextUserId } = require("../models/users.models");
+const ApiError = require("../utils/ApiError");
 
 router.get("/", (req, res) => res.json(users));
 
 router.get("/:id", (req, res, next) => {
   const user = users.find((u) => u.id === +req.params.id);
   if (!user) {
-    const err = new Error("User not found");
-    err.status = 404;
-    return next(err);
+    return next(new ApiError(404, "User not found"));
   }
   res.json(user);
 });
@@ -17,9 +16,7 @@ router.get("/:id", (req, res, next) => {
 router.post("/", (req, res, next) => {
   const { name, email } = req.body;
   if (!name || !email) {
-    const err = new Error("Name and email required");
-    err.status = 400;
-    return next(err);
+    return next(new ApiError(400, "Name and email are required"));
   }
   const newUser = { id: getNextUserId(), name, email };
   users.push(newUser);

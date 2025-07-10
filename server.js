@@ -15,12 +15,15 @@ app.use("/posts", postRoutes);
 app.use("/comments", commentRoutes);
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack); // Log full error stack for debugging
+  console.error(err.stack);
 
-  const status = err.status || 500;
-  const message = err.message || "Internal Server Error";
+  if (err.isOperational) {
+    // Known, operational error
+    return res.status(err.statusCode).json({ error: err.message });
+  }
 
-  res.status(status).json({ error: message });
+  // Unknown or programming errors
+  res.status(500).json({ error: "Internal Server Error" });
 });
 
 app.listen(PORT, () => {
