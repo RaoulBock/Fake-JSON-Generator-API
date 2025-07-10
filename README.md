@@ -31,6 +31,6 @@ A simple Node.js REST API that provides fake users, posts, and comments data —
 ### Installation
 
 ```bash
-git clone https://github.com/raoul/Fake-JSON-Generator-API
+git clone https://github.com/raoulbock/Fake-JSON-Generator-API
 cd Fake-JSON-Generator-API
 npm install
